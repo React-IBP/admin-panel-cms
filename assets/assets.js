@@ -3,11 +3,13 @@ import google_white_icon from "@/assets/icons/google_white.svg";
 import ecomerce_icon from "@/assets/icons/ecomerce_white.svg";
 import arrow_down_icon from "@/assets/icons/arrow_down.svg";
 import arrow_up_icon from "@/assets/icons/arrow_up.svg";
+import arrow_right_out_icon from "@/assets/icons/arrow_right_out.svg";
 export const assets = {
     google_white_icon: google_white_icon,
     ecomerce_icon: ecomerce_icon,
     arrow_down_icon: arrow_down_icon,
     arrow_up_icon:arrow_up_icon,
+    arrow_right_out_icon:arrow_right_out_icon,
 };
 
 export const blog_data = [

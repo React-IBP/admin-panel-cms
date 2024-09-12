@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image';
 import { assets } from '@/assets/assets';
+import Logout from './Logout';
 
 const Sidebar = () => {
     const [openSidebar, setOpenSidebar] = useState('-translate-x-full');
@@ -104,7 +105,9 @@ const Sidebar = () => {
                         </li>
 
                         {/* Aquí puedes agregar más menús desplegables usando el mismo patrón */}
+
                     </ul>
+                    <Logout />
                 </div>
             </aside>
         </div>

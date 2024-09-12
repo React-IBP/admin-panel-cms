@@ -5,9 +5,11 @@ import { useLoginContext } from '@/context/LoginContext';
 import { getSession } from '@/utils/actions';
 import { useRouter } from 'next/navigation';
 import { login } from "@/utils/actions";
-
+import { useFormState } from "react-dom";
+import LoadingSpinner from './ui/LoadingSpinner';
 const LoginForm = () => {
     const router = useRouter();
+    const [state, formAction] = useFormState(login, undefined);
     const [isLoading, setIsLoading] = useState('');
     const { isAuthenticated, toggleAuth } = useLoginContext();
     const [sessionHandle, setSessionHandle] = useState(false);
@@ -26,7 +28,7 @@ const LoginForm = () => {
             }
         };
         fetchSession();
-    }, [router,isAuthenticated]); // Añade router como dependencia 
+    }, [router, isAuthenticated, isLoading]); // Añade router como dependencia 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -35,7 +37,7 @@ const LoginForm = () => {
         if (form) {
             const formData = new FormData(form);
             setIsLoading('Validando información...');
-            
+            formAction(formData); // Pasa un objeto 
             // Realiza la acción de login
             try {
                 const response = await login(formData);
@@ -48,7 +50,9 @@ const LoginForm = () => {
             }
         }
     };
-
+    useEffect(() => {
+       // document.querySelector('#loadingDiv').innerHTML = '';
+    }, [isLoading])
     return (
         <section className="flex justify-center bg-gray-50 dark:bg-gray-900 h-screen ">
             <div className="flex flex-col items-center w-full justify-center px-4 py-8 mx-auto md:h-screen lg:py-0">
@@ -85,6 +89,18 @@ const LoginForm = () => {
                                     required
                                 />
                             </div>
+                            <div className="flex items-center justify-center">
+                                 
+                                
+                                    <div id="loadingDiv" className='d-nones'>
+                                        {
+                                            isLoading && <LoadingSpinner/>
+                                        }
+                                    </div>
+                                    <div className='col col-lg-12 text-center center text-danger'>
+                                        {state?.error && <p>{state.error}</p>}
+                                    </div> 
+                            </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-start">
                                     <div className="flex items-center h-5">
@@ -102,10 +118,10 @@ const LoginForm = () => {
                                 <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
                             </div>
                             <div className="flex flex-col sm:flex-row justify-center w-full space-y-2 sm:space-y-0 sm:space-x-2 text-center">
-                            <button type="submit" className="w-full text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                            Sign in
+                                <button type="submit" className="w-full text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                    Sign in
                                 </button>
-                                <ButtonLoginGoogle  toggleAuth={toggleAuth} />
+                                <ButtonLoginGoogle toggleAuth={toggleAuth} />
                             </div>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Don’t have an account yet? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>

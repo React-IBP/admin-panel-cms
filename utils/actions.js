@@ -52,17 +52,19 @@ export const loginGoogle = async (dataLoginGoogle) => {
 
 export const login = async (prevState, formData) => {
   const session = await getSession();
-
+  const urlLogin = `${process.env.APP_URL}/api/login`;
   const email = formData.get("email");
   const password = formData.get("password");
   const params = {
     email: email,
     password: password
   }
+  console.log('params', params)
+  console.log('Url login ' , urlLogin)
   //fetch a db
   const dataSessionDB = async () => {
     try {
-      const response = await axios.post(`${process.env.APP_URL}/api/login`,
+      const response = await axios.post(urlLogin,
         params);
       return response.data; // Retorna los datos que necesitas de la respuesta
     } catch (err) {
@@ -100,7 +102,7 @@ export const login = async (prevState, formData) => {
 export const logout = async () => {
   const session = await getSession();
   session.destroy();
-  redirect("/");
+  redirect("/login");
 };
 
 export const changePremium = async () => {
