@@ -1,4 +1,4 @@
-import { assets } from '@/assets/assets'
+import { assets } from '@/components/ui/assets/assets'
 import { logout } from '@/utils/actions'
 import Image from 'next/image'
 import React from 'react'

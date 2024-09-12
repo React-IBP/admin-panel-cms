@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { handleCredentialResponse } from '@/utils/loginHelper';
 import styled from 'styled-components';
 import Image from 'next/image';
-import { assets } from "@/assets/assets";
+import { assets } from "@/components/ui/assets/assets";
 
  
 const StyledDiv = styled.div`
