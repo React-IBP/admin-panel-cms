@@ -6,6 +6,7 @@ const nextConfig = {
         GOOGLE_SECRET_CLIENTE: process.env.GOOGLE_SECRET_CLIENTE,
         RESEND_API_KEY: process.env.RESEND_API_KEY,
         URL_APP_PROD: process.env.URL_APP_PROD,
+        MONGODB_URI_LOCAL: process.env.MONGODB_URI_LOCAL,
     },
 
     images: {

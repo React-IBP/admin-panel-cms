@@ -4,7 +4,11 @@ import ecomerce_icon from "@/components/ui/assets/icons/ecomerce_white.svg";
 import arrow_down_icon from "@/components/ui/assets/icons/arrow_down.svg";
 import arrow_up_icon from "@/components/ui/assets/icons/arrow_up.svg";
 import arrow_right_out_icon from "@/components/ui/assets/icons/arrow_right_out.svg";
+import users_icon from "@/components/ui/assets/icons/users.svg";
+import home_icon from "@/components/ui/assets/icons/home.svg";
 export const assets = {
+    users_icon: users_icon,  // agregar iconos aquí para cada asset
+    home_icon:home_icon,
     google_white_icon: google_white_icon,
     ecomerce_icon: ecomerce_icon,
     arrow_down_icon: arrow_down_icon,
