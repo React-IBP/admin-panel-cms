@@ -3,11 +3,13 @@ import React, { useState } from 'react'
 import Image from 'next/image';
 import { assets } from '@/components/ui/assets/assets';
 import Logout from './Logout';
+import Link from 'next/link';
+import menuAdmin from '@/utils/config/menuAdmin';
 
 const Sidebar = () => {
     const [openSidebar, setOpenSidebar] = useState('-translate-x-full');
     const [activeMenu, setActiveMenu] = useState(null);
-
+    const [activeIndex, setActiveIndex] = useState(null);
     const handleMenu = () => {
         if (openSidebar === '-translate-x-full') {
             setOpenSidebar('');
@@ -52,55 +54,38 @@ const Sidebar = () => {
                         <li>
                             {BottonMenu('mt-2', true)}
                         </li>
-                        <li>
-                            <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">                                
-                                <Image src={assets.home_icon} alt='Home' />sds
-                            </a>
-                        </li>
 
-                        <li>
-                            <button onClick={() => expandItemMenu('dropdown-ecomerce')} type="button" className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-ecomerce" aria-expanded={activeMenu === 'dropdown-ecomerce'}>
-                                <Image src={assets.users_icon} alt='ecomerce ' />
-                                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">E-commerce</span>
-                                <Image src={assets.arrow_down_icon} alt='select icon'/>
-                            </button>
-                            <ul id="dropdown-ecomerce" className={`py-2 space-y-2 ${activeMenu === 'dropdown-ecomerce' ? '' : 'hidden'}`}>
-                                <li>
-                                    <a href="#" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Products</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Billing</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Invoice</a>
-                                </li>
-                            </ul>
-                        </li>
 
-                        <li>
-                            <button onClick={() => expandItemMenu('dropdown-ecomerces')} type="button" className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-ecomerces" aria-expanded={activeMenu === 'dropdown-ecomerces'}>
-                                <Image src={assets.ecomerce_icon} alt='ecomerce ' />
-                                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">E-commerce</span>
-                                <Image src={
-                                    activeMenu === 'dropdown-ecomerces' ?
-                                    assets.arrow_up_icon
-                                    :
-                                    assets.arrow_down_icon} alt='select icon'/>
-                            </button>
-                            <ul id="dropdown-ecomerces" className={`py-2 space-y-2 ${activeMenu === 'dropdown-ecomerces' ? '' : 'hidden'}`}>
-                                <li>
-                                    <a href="#" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Products</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Billing</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Invoice</a>
-                                </li>
-                            </ul>
-                        </li>
+                        {menuAdmin.map((item, index) => (
+                            <li className={` `} key={index}>
+                                <button id={`collapse${index}`} onClick={() => expandItemMenu(`dropdown-${index}`)} type="button" className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls={`dropdown-${index}`} aria-expanded={activeMenu === `dropdown-${index}`}>
+                                    <i className={item.icon}></i> {' '}
+                                    <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{item.title}</span>
 
-                        {/* Aquí puedes agregar más menús desplegables usando el mismo patrón */}
+                                    {
+                                        activeMenu === `dropdown-${index}` ?
+                                            item?.submenu && (<Image src={assets.arrow_up_icon} alt='select icon' />) :
+                                            item?.submenu && (<Image src={assets.arrow_down_icon} alt='select icon' />)
+                                    }
+
+                                </button>
+                                
+                                {item.submenu && (
+                                    <>
+
+                                        <ul id={`dropdown-${index}`} className={`py-2 space-y-2 ${activeMenu === `dropdown-${index}` ? '' : 'hidden'}`}>
+                                            {item.submenu.map((subItem, subIndex) => (
+                                                <Link href={subItem.link} className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" key={subIndex}>
+                                                    {subItem.title}
+                                                </Link>
+                                            ))}
+
+
+                                        </ul>
+                                    </>
+                                )}
+                            </li>
+                        ))} 
 
                     </ul>
                     <Logout />
