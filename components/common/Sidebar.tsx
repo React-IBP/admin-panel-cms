@@ -1,15 +1,15 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import { assets } from '@/components/ui/assets/assets';
 import Logout from './Logout';
 import Link from 'next/link';
 import menuAdmin from '@/utils/config/menuAdmin';
+import { getSession } from '@/utils/actions';
 
 const Sidebar = () => {
     const [openSidebar, setOpenSidebar] = useState('-translate-x-full');
-    const [activeMenu, setActiveMenu] = useState(null);
-    const [activeIndex, setActiveIndex] = useState(null);
+    const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const handleMenu = () => {
         if (openSidebar === '-translate-x-full') {
             setOpenSidebar('');
@@ -18,12 +18,12 @@ const Sidebar = () => {
         }
     };
 
-    const expandItemMenu = (id) => {
+    const expandItemMenu = (id?: string) => {
         // Si el menú actual ya está abierto, ciérralo
         if (activeMenu === id) {
             setActiveMenu(null);
         } else {
-            setActiveMenu(id);
+            setActiveMenu(id ?? null);
         }
     };
 
@@ -43,12 +43,30 @@ const Sidebar = () => {
             </button>
         )
     }
+    const [sessionHandle, setSessionHandle] = useState(false);
+
+    // Efecto para obtener la sesión cuando el componente se monta
+    useEffect(() => {
+        const sessionData: any = async () => {
+            const sessionData: any = await getSession();
+            if (sessionData?.isLoggedIn) { 
+                setSessionHandle(sessionData?.isLoggedIn); 
+                localStorage.setItem('isAuthenticated', JSON.stringify(sessionData?.isLoggedIn));                
+            }
+        }
+        sessionData()
+
+    }, [sessionHandle]);
+
+
 
     return (
-        <div className='relative'>
+
+        sessionHandle ? (< div className='relative' >
             {BottonMenu('mt-6')}
 
-            <aside id="default-sidebar" className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0 ${openSidebar}`} aria-label="Sidebar">
+            <div id="default-sidebar" className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0 ${openSidebar}`
+            } aria-label="Sidebar" >
                 <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
                     <ul className="space-y-2 font-medium">
                         <li>
@@ -58,18 +76,36 @@ const Sidebar = () => {
 
                         {menuAdmin.map((item, index) => (
                             <li className={` `} key={index}>
-                                <button id={`collapse${index}`} onClick={() => expandItemMenu(`dropdown-${index}`)} type="button" className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls={`dropdown-${index}`} aria-expanded={activeMenu === `dropdown-${index}`}>
-                                    <i className={item.icon}></i> {' '}
-                                    <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{item.title}</span>
+                                {
+                                    item?.submenu ? (
+                                        <span id={`collapse${index}`} onClick={() => expandItemMenu(`dropdown-${index}`)} className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 cursor-pointer" aria-controls={`dropdown-${index}`} aria-expanded={activeMenu === `dropdown-${index}`}>
+                                            <i className={item.icon}></i> {' '}
+                                            <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{item.title}</span>
 
-                                    {
-                                        activeMenu === `dropdown-${index}` ?
-                                            item?.submenu && (<Image src={assets.arrow_up_icon} alt='select icon' />) :
-                                            item?.submenu && (<Image src={assets.arrow_down_icon} alt='select icon' />)
-                                    }
+                                            {
+                                                activeMenu === `dropdown-${index}` ?
+                                                    item?.submenu && (<Image src={assets.arrow_up_icon} alt='select icon' />) :
+                                                    item?.submenu && (<Image src={assets.arrow_down_icon} alt='select icon' />)
+                                            }
 
-                                </button>
-                                
+                                        </span>
+                                    ) : (
+                                        <Link href={`${item.link}`} id={`collapse${index}`} onClick={() => expandItemMenu(`dropdown-${index}`)} type="button" className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls={`dropdown-${index}`} aria-expanded={activeMenu === `dropdown-${index}`}>
+                                            <i className={item.icon}></i> {' '}
+                                            <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{item.title}</span>
+
+                                            {
+                                                activeMenu === `dropdown-${index}` ?
+                                                    item?.submenu && (<Image src={assets.arrow_up_icon} alt='select icon' />) :
+                                                    item?.submenu && (<Image src={assets.arrow_down_icon} alt='select icon' />)
+                                            }
+
+                                        </Link>
+
+                                    )
+
+                                }
+
                                 {item.submenu && (
                                     <>
 
@@ -85,13 +121,15 @@ const Sidebar = () => {
                                     </>
                                 )}
                             </li>
-                        ))} 
+                        ))}
 
                     </ul>
                     <Logout />
                 </div>
-            </aside>
-        </div>
+            </div >
+        </div >) : null
+
+
     )
 }
 

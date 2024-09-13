@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 // let isPro = true;
 let isBlocked = true;
 
-  
+
 
 
 export const getSession = async () => {
@@ -60,7 +60,7 @@ export const login = async (prevState, formData) => {
     password: password
   }
   console.log('params', params)
-  console.log('Url login ' , urlLogin)
+  console.log('Url login ', urlLogin)
   //fetch a db
   const dataSessionDB = async () => {
     try {
@@ -103,6 +103,7 @@ export const logout = async () => {
   const session = await getSession();
   session.destroy();
   redirect("/login");
+   
 };
 
 export const changePremium = async () => {

@@ -28,7 +28,7 @@ const LoginForm = () => {
             }
         };
         fetchSession();
-    }, [router, isAuthenticated, isLoading]); // Añade router como dependencia 
+    }, [router, isAuthenticated, isLoading]);  
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -42,17 +42,24 @@ const LoginForm = () => {
             try {
                 const response = await login(formData);
                 console.log('Login exitoso', response);
+                setSessionHandle(true);
                 toggleAuth(); // Actualiza el contexto de autenticación
                 router.push('/dashboard');  // Redirige después del login
-            } catch (error) {
-                console.error('Error en el login:', error);
+            } catch (error) { 
+                const sessionData: any = await getSession();
+                if (sessionData?.isLoggedIn) { 
+                    console.log('sessionData',sessionData)
+                    localStorage.setItem('isAuthenticated',JSON.stringify(sessionData?.isLoggedIn));                   
+                    router.push('/dashboard');  // Redirige al dashboard si ya está autenticado
+                }
+               // console.error('Error en el login:', error);
                 setIsLoading('Error al iniciar sesión.');
             }
         }
     };
     useEffect(() => {
        // document.querySelector('#loadingDiv').innerHTML = '';
-    }, [isLoading])
+    }, [isLoading,isAuthenticated])
     return (
         <section className="flex justify-center bg-gray-50 dark:bg-gray-900 h-screen ">
             <div className="flex flex-col items-center w-full justify-center px-4 py-8 mx-auto md:h-screen lg:py-0">

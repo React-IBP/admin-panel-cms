@@ -6,14 +6,16 @@ import arrow_up_icon from "@/components/ui/assets/icons/arrow_up.svg";
 import arrow_right_out_icon from "@/components/ui/assets/icons/arrow_right_out.svg";
 import users_icon from "@/components/ui/assets/icons/users.svg";
 import home_icon from "@/components/ui/assets/icons/home.svg";
+import upload_area from "@/components/ui/assets/icons/upload_area.png";
 export const assets = {
-    users_icon: users_icon,  // agregar iconos aquí para cada asset
-    home_icon:home_icon,
-    google_white_icon: google_white_icon,
-    ecomerce_icon: ecomerce_icon,
-    arrow_down_icon: arrow_down_icon,
-    arrow_up_icon:arrow_up_icon,
-    arrow_right_out_icon:arrow_right_out_icon,
+    users_icon,  // agregar iconos aquí para cada asset
+    home_icon,
+    google_white_icon,
+    ecomerce_icon,
+    arrow_down_icon,
+    arrow_up_icon,
+    arrow_right_out_icon,
+    upload_area,
 };
 
 export const blog_data = [
@@ -193,4 +195,43 @@ export const blog_data = [
         author: "Alex Bennett",
         author_img: 'profile_icon',
     },
+];
+//"admin", "editor", "reader", "writer", "file"
+export const rolles = [
+    {
+        _id: 1,
+        title: "Administrator",
+        value:
+            "admin",
+
+    },
+    {
+        _id: 1,
+        title: "Editor",
+        value:
+            "editor",
+
+    },
+    {
+        _id: 1,
+        title: "Reader",
+        value:
+            "reader",
+
+    },
+    {
+        _id: 1,
+        title: "Writer",
+        value:
+            "writer",
+
+    },
+    {
+        _id: 1,
+        title: "Files",
+        value:
+            "file",
+
+    },
+
 ];

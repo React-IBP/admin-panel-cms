@@ -12,7 +12,7 @@ const spin = keyframes`
 
 const Spinner = styled.div`
   border: 8px solid rgba(0, 0, 0, 0.1);
-  border-left-color: #4CAF50;  /* Color del borde animado */
+  border-left-color: #ffffff;  /* Color del borde animado */
   border-radius: 50%;
   width: 50px;
   height: 50px;
