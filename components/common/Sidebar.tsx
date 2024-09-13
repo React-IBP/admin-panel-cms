@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image';
 import { assets } from '@/components/ui/assets/assets';
 import Logout from './Logout';
@@ -9,6 +9,7 @@ import { getSession } from '@/utils/actions';
 
 const Sidebar = () => {
     const [openSidebar, setOpenSidebar] = useState('-translate-x-full');
+    const sidebarRef = useRef(null);
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const handleMenu = () => {
         if (openSidebar === '-translate-x-full') {
@@ -17,7 +18,24 @@ const Sidebar = () => {
             setOpenSidebar('-translate-x-full');
         }
     };
-
+    useEffect(() => {
+        const handleClickOutside = (event:any) => {
+          if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+           
+            console.log('Clic fuera del sidebar');
+            // Ejecuta la acción  
+            
+                setOpenSidebar('-translate-x-full');
+            
+          } 
+        };
+    
+        document.addEventListener('mousedown', handleClickOutside);
+    
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, [openSidebar]);
     const expandItemMenu = (id?: string) => {
         // Si el menú actual ya está abierto, ciérralo
         if (activeMenu === id) {
@@ -65,7 +83,7 @@ const Sidebar = () => {
         sessionHandle ? (< div className='relative' >
             {BottonMenu('mt-6')}
 
-            <div id="default-sidebar" className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0 ${openSidebar}`
+            <div id="default-sidebar"  ref={sidebarRef}   className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0 ${openSidebar}`
             } aria-label="Sidebar" >
                 <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
                     <ul className="space-y-2 font-medium">

@@ -89,7 +89,7 @@ export async function POST(request) {
     return NextResponse.json({
       success: false,
       msg:  error?.errorResponse?.errmsg || "Error to create user entry",
-      
+      error:error
     });
   }
 }
