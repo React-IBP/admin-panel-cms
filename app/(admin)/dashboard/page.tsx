@@ -11,7 +11,7 @@ const page = () => {
   }, []);
   return (
     <>
-      <Sidebar />
+      
     </>
   )
 }
