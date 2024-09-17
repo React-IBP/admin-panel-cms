@@ -6,19 +6,22 @@ import UserModel from "@/models/UserModel";
 import { Resend } from 'resend';
 import bcrypt from "bcryptjs";
 import generateTokensModel from "@/models/generateTokensModel";
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/dist/server/api-utils"; 
 const LoadDB = async () => {
     await ConnectDB();
 };
 LoadDB();
-export const encryptarPassword = async (password) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$/;
-    const salt = await bcrypt.genSalt(10); // Genera una sal con un factor de costo de 10
-    let passwordEncrypted = await bcrypt.hash(password, salt); // Encripta la contraseña
+ 
 
-    return passwordEncrypted;
-
-}
+export async function encryptarPassword(plainPassword) {
+    try {
+      const salt = await bcrypt.genSalt(10); // Genera una sal con un factor de costo de 10
+      const encryptedPassword = await bcrypt.hash(plainPassword, salt); // Encripta la contraseña
+      return encryptedPassword; // Retorna la contraseña encriptada
+    } catch (err) {
+      throw new Error('Error al encriptar la contraseña: ' + err.message); // Maneja cualquier error
+    }
+  }
 export const changePasswordUser = async (prevState, formData) => {
     const password = formData.get("password");
     const passwordRepeat = formData.get("passwordRepeat");
@@ -224,3 +227,6 @@ export const ServerSession = async () => {
 };
 
  
+
+ 
+

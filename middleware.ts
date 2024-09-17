@@ -17,12 +17,13 @@ export async function middleware(req: NextRequest) {
     // Obtener la sesión
     const session = await getIronSession(req, res, sessionOptions);
 
-    console.log('datos de sesión:', session);
+    //console.log('datos de sesión:', session);
 
     if (!session?.email || !session?.isLoggedIn) {
       // Redirige al usuario no autenticado a la página de login
       return NextResponse.redirect(new URL('/login', req.url));
     }
+    
   } catch (error) {
     console.error('Error obteniendo la sesión:', error);
     return NextResponse.redirect(new URL('/login', req.url));

@@ -1,5 +1,5 @@
-import { ConnectDB } from "@/libs/config/db";
-import ArticleModel from "@/libs/models/articleModel";
+import { ConnectDB } from "@/utils/config/db";
+import ArticleModel from "@/models/articleModel";
 const { NextResponse } = require("next/server");
 import { writeFile } from "fs/promises";
 const fs = require("fs");
@@ -209,7 +209,7 @@ export async function PUT(request) {
 }
 
 
-// funtionally to delete a article entry from the database
+// functionality to delete a article entry from the database
 
 export async function DELETE(request) {
   const blogId = request.nextUrl.searchParams.get("id");

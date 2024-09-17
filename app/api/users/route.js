@@ -4,6 +4,7 @@ import UserModel from "@/models/UserModel";
 const { NextResponse } = require("next/server");
 import { writeFile } from "fs/promises";
 import { Buffer } from "buffer";
+import { encryptarPassword } from "@/utils/loginHelper";
 
 const fs = require("fs");
 const LoadDB = async () => {
@@ -74,6 +75,7 @@ export async function POST(request) {
     email: `${formData.get("email")}`,
     password: `${formData.get("password")}`,
     image: `${imgUrl}`,
+    roll: `${formData.get("roll")}`,
   };
   console.log("Data to save in db", UserData);
   // Save user data to db
@@ -88,13 +90,13 @@ export async function POST(request) {
     console.log('error response', error)
     return NextResponse.json({
       success: false,
-      msg:  error?.errorResponse?.errmsg || "Error to create user entry",
-      error:error
+      msg: error?.errorResponse?.errmsg || "Error to create user entry",
+      errors: error
     });
   }
 }
 // functinally to update de data in db
- 
+
 /**
  * Función para manejar una solicitud PUT para actualizar los datos de un usuario.
  * @param {Request} request - La solicitud HTTP.
@@ -103,8 +105,10 @@ export async function POST(request) {
 export async function PUT(request) {
   // Obtener datos del formulario de la solicitud
   const formData = await request.formData();
+  console.log('Form data', formData);
   const email = formData.get("email");
-
+  const password = formData.get("password");
+  let newUserData = {};
   try {
     // Buscar el usuario por email
     const user = await UserModel.find({ email });
@@ -134,13 +138,27 @@ export async function PUT(request) {
       imgUrl = oldUserData.image;
     }
 
-    const newUserData = {
-      firstName: formData.get("firstName"),
-      lastName: formData.get("lastName"),
-      email,
-      image: imgUrl,
-    };
+    if (password.length > 0) {
+      const encryptedPassword = await encryptarPassword(password);
+      newUserData = {
+        firstName: formData.get("firstName"),
+        lastName: formData.get("lastName"),
+        email,
+        image: imgUrl,
+        roll: formData.get("roll"),
+        password:  encryptedPassword
+      };
+    } else {
+      newUserData = {
+        firstName: formData.get("firstName"),
+        lastName: formData.get("lastName"),
+        email,
+        image: imgUrl,
+        roll: formData.get("roll")
+      };
+    }
 
+    //return console.log('newUserData', newUserData);
     const previousImage = oldUserData.image;
 
     if (newUserData.image && newUserData.image !== previousImage) {
@@ -175,7 +193,7 @@ export async function PUT(request) {
 }
 
 
-// funtionally to delete a user entry from the database
+// functionality to delete a user entry from the database
 
 export async function DELETE(request) {
   const userId = request.nextUrl.searchParams.get("id");
@@ -187,7 +205,7 @@ export async function DELETE(request) {
     console.log("User found for delete", user.image);
     if (user.image != "/public/images/users/placeholder_user.png") {
       //  Delete image from the folder
-      fs.unlink(`./public${user.image}`, () => {});
+      fs.unlink(`./public${user.image}`, () => { });
     }
     await UserModel.findByIdAndDelete(userId);
     console.log("data response --------------------->", user);

@@ -37,7 +37,7 @@ const UsersTableItem: React.FC<UserProps> = ({ mongoId, email, firstName, lastNa
                 </td>
                 <td className="px-6 py-4">
                     {mongoId ? (<ButtonRed handleButton={() => handleDelete(mongoId)} iconButton="fa-solid fa-trash" textButton="Delete" />) : ""}
-                    {mongoId ? (<Link href={`/admin/update-user/${mongoId}`}       >
+                    {mongoId ? (<Link href={`users/update/${mongoId}`}       >
                         <ButtonWhite iconButton="fa-solid fa-edit" textButton="Update" />
                     </Link>) : ""}
                 </td>

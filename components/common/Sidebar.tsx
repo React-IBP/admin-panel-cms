@@ -11,6 +11,7 @@ const Sidebar = () => {
     const [openSidebar, setOpenSidebar] = useState('-translate-x-full');
     const sidebarRef = useRef(null);
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
+    const [sessionData, setSessionData] = useState({});
     const handleMenu = () => {
         if (openSidebar === '-translate-x-full') {
             setOpenSidebar('');
@@ -19,14 +20,10 @@ const Sidebar = () => {
         }
     };
     useEffect(() => {
-        const handleClickOutside = (event:any) => {
-          if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-           
-            console.log('Clic fuera del sidebar');
-            // Ejecuta la acción  
-            
-                setOpenSidebar('-translate-x-full');
-            
+        const handleClickOutside = (event:Event) => {
+          if (sidebarRef.current && !sidebarRef.current.contains(event.target)) { 
+            // Ejecuta la acción   cerrar el menu
+                setOpenSidebar('-translate-x-full'); 
           } 
         };
     
@@ -69,6 +66,7 @@ const Sidebar = () => {
             const sessionData: any = await getSession();
             if (sessionData?.isLoggedIn) { 
                 setSessionHandle(sessionData?.isLoggedIn); 
+                setSessionData(sessionData);
                 localStorage.setItem('isAuthenticated', JSON.stringify(sessionData?.isLoggedIn));                
             }
         }
@@ -77,7 +75,15 @@ const Sidebar = () => {
     }, [sessionHandle]);
 
 
-
+    const imgUser = {
+        backgroundImage: `url(${sessionData?.image || assets.image_icon})`,
+        backgroundSize: 'cover', // Esto asegura que la imagen cubra el contenedor
+        backgroundPosition: 'center', // Centra la imagen
+        backgroundRepeat: 'no-repeat' // Evita que la imagen se repita
+    };
+    
+    
+    
     return (
 
         sessionHandle ? (< div className='relative' >
@@ -86,6 +92,9 @@ const Sidebar = () => {
             <div id="default-sidebar"  ref={sidebarRef}   className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0 ${openSidebar}`
             } aria-label="Sidebar" >
                 <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+                    <ul className='  space-y-2 font-medium'>
+                    <li className="userPicture" style={imgUser}></li>
+                    </ul>
                     <ul className="space-y-2 font-medium">
                         <li>
                             {BottonMenu('mt-2', true)}

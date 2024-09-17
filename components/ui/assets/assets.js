@@ -7,6 +7,7 @@ import arrow_right_out_icon from "@/components/ui/assets/icons/arrow_right_out.s
 import users_icon from "@/components/ui/assets/icons/users.svg";
 import home_icon from "@/components/ui/assets/icons/home.svg";
 import upload_area from "@/components/ui/assets/icons/upload_area.png";
+import image_icon from "@/components/ui/assets/icons/image.svg";
 export const assets = {
     users_icon,  // agregar iconos aquí para cada asset
     home_icon,
@@ -16,6 +17,7 @@ export const assets = {
     arrow_up_icon,
     arrow_right_out_icon,
     upload_area,
+    image_icon,
 };
 
 export const blog_data = [
@@ -201,36 +203,31 @@ export const rolles = [
     {
         _id: 1,
         title: "Administrator",
-        value:
-            "admin",
+        value: "admin",
 
     },
     {
-        _id: 1,
+        _id: 2,
         title: "Editor",
-        value:
-            "editor",
+        value: "editor",
 
     },
     {
-        _id: 1,
+        _id: 3,
         title: "Reader",
-        value:
-            "reader",
+        value: "reader",
 
     },
     {
-        _id: 1,
+        _id: 3,
         title: "Writer",
-        value:
-            "writer",
+        value:"writer",
 
     },
     {
-        _id: 1,
+        _id: 4,
         title: "Files",
-        value:
-            "file",
+        value: "file",
 
     },
 

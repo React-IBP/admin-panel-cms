@@ -25,3 +25,26 @@ body {
     text-wrap: balance;
   }
 }
+
+.errorInput {
+  border: solid red 2px;
+}
+
+.errorMessageLabel {
+  font-weight: bold;
+  color: #cf0101;
+  font-size: 0.8rem;
+}
+
+.userPicture{
+  cursor: pointer;
+  border-radius: 50%;
+  border: solid 0.5px white;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+}
+ 

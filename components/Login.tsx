@@ -13,7 +13,10 @@ const LoginForm = () => {
     const [isLoading, setIsLoading] = useState('');
     const { isAuthenticated, toggleAuth } = useLoginContext();
     const [sessionHandle, setSessionHandle] = useState(false);
-
+    const  hableErrorNull = ()=>{
+        setIsLoading('')
+        
+    }
     // Efecto para obtener la sesión cuando el componente se monta
     useEffect(() => {
         const fetchSession = async () => {
@@ -28,7 +31,7 @@ const LoginForm = () => {
             }
         };
         fetchSession();
-    }, [router, isAuthenticated, isLoading]);  
+    }, [router, isAuthenticated, isLoading]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -45,21 +48,21 @@ const LoginForm = () => {
                 setSessionHandle(true);
                 toggleAuth(); // Actualiza el contexto de autenticación
                 router.push('/dashboard');  // Redirige después del login
-            } catch (error) { 
+            } catch (error) {
                 const sessionData: any = await getSession();
-                if (sessionData?.isLoggedIn) { 
-                    console.log('sessionData',sessionData)
-                    localStorage.setItem('isAuthenticated',JSON.stringify(sessionData?.isLoggedIn));                   
+                if (sessionData?.isLoggedIn) {
+                    console.log('sessionData', sessionData)
+                    localStorage.setItem('isAuthenticated', JSON.stringify(sessionData?.isLoggedIn));
                     router.push('/dashboard');  // Redirige al dashboard si ya está autenticado
                 }
-               // console.error('Error en el login:', error);
+                // console.error('Error en el login:', error);
                 setIsLoading('Error al iniciar sesión.');
             }
         }
     };
     useEffect(() => {
-       // document.querySelector('#loadingDiv').innerHTML = '';
-    }, [isLoading,isAuthenticated])
+        // document.querySelector('#loadingDiv').innerHTML = '';
+    }, [isLoading, isAuthenticated])
     return (
         <section className="flex justify-center bg-gray-50 dark:bg-gray-900 h-screen ">
             <div className="flex flex-col items-center w-full justify-center px-4 py-8 mx-auto md:h-screen lg:py-0">
@@ -83,11 +86,13 @@ const LoginForm = () => {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="@"
                                     required
+                                    onFocus={hableErrorNull}
                                 />
                             </div>
                             <div>
                                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                                 <input
+                                    onFocus={hableErrorNull}
                                     type="password"
                                     name="password"
                                     id="password"
@@ -97,16 +102,18 @@ const LoginForm = () => {
                                 />
                             </div>
                             <div className="flex items-center justify-center">
-                                 
-                                
-                                    <div id="loadingDiv" className='d-nones'>
-                                        {
-                                            isLoading && <LoadingSpinner/>
-                                        }
-                                    </div>
-                                    <div className='col col-lg-12 text-center center text-danger'>
+
+
+                                <div id="loadingDiv" className='d-nones'>
+                                    {
+                                        isLoading && <LoadingSpinner />
+                                    }
+                                    <br />
+                                    <div className='col col-lg-12 text-center center text-red'>
                                         {state?.error && <p>{state.error}</p>}
-                                    </div> 
+                                    </div>
+                                </div>
+
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-start">

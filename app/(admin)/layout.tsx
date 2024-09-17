@@ -5,7 +5,8 @@ import { TitleComponentContextProvider } from "@/context/TitleComponentContext";
 import { MenuSidebarProvider } from "@/context/MenuSidebarContext";
 import Sidebar from "@/components/common/Sidebar";
 import PanelContainer from "@/components/common/PanelContainer";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <>
       <MenuSidebarProvider>
+      <ToastContainer theme="dark" />
         <Sidebar />
         <TitleComponentContextProvider>
           <PanelContainer>

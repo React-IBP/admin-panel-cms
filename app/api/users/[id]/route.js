@@ -1,5 +1,5 @@
-import { ConnectDB } from "@/libs/config/db";
-import UserModel from "@/libs/models/UserModel";
+import { ConnectDB } from"@/utils/config/db";
+import UserModel from "@/models/UserModel";
 const { NextResponse } = require("next/server");
 import { writeFile } from "fs/promises";
 const fs = require("fs");

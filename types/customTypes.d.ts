@@ -7,10 +7,31 @@ interface UserProps {
      image: string,
      date: Date,
      active: boolean,
-     handleDelete: (id:string) => void,
+     handleDelete: (id: string) => void,
      roll: string
 }
 
 interface SegmenterProps {
      slug: string
 }
+
+
+interface ParamsUserProps {
+     params: { id: any; };
+     firstName: string;
+     lastName: string;
+     email: string;
+     image: string;
+     roll: string;
+     password: string;
+     confirmPassword: string;
+}
+
+interface ErrorDetails {
+     keyValue: Record<string, any>; // Ajusta el tipo según el contenido esperado
+   }
+   
+   interface ErrorsState {
+     error?: ErrorDetails;
+     [key: string]: any; // Para permitir otros campos en el objeto de errores
+   }
