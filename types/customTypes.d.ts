@@ -15,6 +15,16 @@ interface SegmenterProps {
      slug: string
 }
 
+interface ArticleProps{
+     title: string;
+     authors: string;
+     description: string;
+     slug: string;
+     section: string;
+     image?: File;
+     content: string; 
+     status:string; 
+}
 
 interface ParamsUserProps {
      params: { id: any; };
@@ -29,9 +39,13 @@ interface ParamsUserProps {
 
 interface ErrorDetails {
      keyValue: Record<string, any>; // Ajusta el tipo según el contenido esperado
-   }
-   
-   interface ErrorsState {
+}
+
+interface ErrorsState {
      error?: ErrorDetails;
      [key: string]: any; // Para permitir otros campos en el objeto de errores
-   }
+}
+interface TitleComponentContextProps {
+     titleComponent: string;
+     setTitle: (title: string) => string;
+}   

@@ -1,7 +1,7 @@
 "use client";
 
 import { assets, rolles } from "@/components/ui/assets/assets";
-import { ButtonDefault, ButtonGreen } from "@/components/ui/Button";
+import { ButtonDefault, ButtonGreen } from "@/components/ui/Buttons";
 import { mongoErrrors } from "@/utils/helpers";
 import axios from "axios";
 import Image from "next/image";

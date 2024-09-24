@@ -1,40 +1,61 @@
 import mongoose from "mongoose";
-const Schema = new mongoose.Schema({
+
+const ArticleSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
+    required: [true, 'Title is required'],
+    minlength: [5, 'Title must be at least 5 characters long'],
+    maxlength: [100, 'Title can not exceed 100 characters'],
   },
-  slug:{
+  slug: {
     type: String,
-    required: true 
+    required: [true, 'Slug is required'],
+    unique: true, // Asegura que el slug sea único
   },
   description: {
     type: String,
-    required: true,
+    required: [true, 'Description is required'],
+    maxlength: [500, 'Description can not exceed 500 characters'],
   },
-  category: {
+  section: {
     type: String,
-    required: true,
+    minlength: [2, 'Section is required'],
+    required: [true, 'Section is required'],
   },
-  author: {
+  authors: {
     type: String,
-    required: true,
+    required: [true, 'Author is required'],
   },
   image: {
     type: String,
-    required: true,
+    required: [true, 'Image URL is required'],
   },
-  authorImg: {
+  content: {
     type: String,
-    required: true,
+    required: [true, 'Content is required'],
   },
   date: {
     type: Date,
-    default: Date.now(),
+    default: Date.now, // Pasa la función sin paréntesis
   },
+  status: {
+    type: String,
+    required: true,
+    enum: [
+      "draft",
+      "published",
+      "unpublished",
+      "archived",
+      "pending",
+      "scheduled",
+      "deleted"
+    ],
+    default: "draft", // Cambié el valor por defecto a "draft" para mayor coherencia
+  },
+  
 });
-const ArticleModel = mongoose.models.article || mongoose.model("article", Schema);
+
+// Verifica si el modelo ya está definido para evitar duplicados
+const ArticleModel = mongoose.models.article || mongoose.model("article", ArticleSchema);
 
 export default ArticleModel;
-
- 

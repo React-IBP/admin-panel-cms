@@ -1,3 +1,5 @@
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
  export const segmenter= (slug:string) => {
   // Convertir a minúsculas
   slug = slug.toLowerCase();
@@ -16,3 +18,6 @@ export const time = () => {
   return Math.floor(Date.now() / 1000); // Devuelve el timestamp Unix actual en segundos
 };
 
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}

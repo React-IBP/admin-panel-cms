@@ -9,16 +9,16 @@ const menuAdmin = [
     title: "Users",
     icon: "fas fa-fw fa-users",
     submenu: [
-      { title: "Users", link: "/dashboard/users" },
-      { title: "Add user", link: "/dashboard/users/add" }
+      { title: "Users", link: "/dashboard/users", icon:"fa-solid fa-users-viewfinder" },
+      { title: "Add user", link: "/dashboard/users/add",  icon:"fa-solid fa-user-plus"}
     ]
   },
   {
     title: "Articles",
     icon: "fas fa-fw fa-newspaper",
     submenu: [
-      { title: "Articles", link: "/dashboard/articles" },
-      { title: "Add artilces", link: "/dashboard/add-article" },
+      { title: "Articles", link: "/dashboard/articles", icon: "fa-regular fa-rectangle-list"  },
+      { title: "Add articles", link: "/dashboard/articles/add",icon: "fas fa-plus" },
       { title: "Animations", link: "/utilities-animation" },
       { title: "Other", link: "/utilities-other" }
     ]

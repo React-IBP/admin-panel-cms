@@ -2,7 +2,7 @@ import { redirect } from "next/dist/server/api-utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { ButtonRed, ButtonWhite, ButtonYellow } from "../ui/Button";
+import { ButtonRed, ButtonWhite, ButtonYellow } from "../ui/Buttons";
 
 const UsersTableItem: React.FC<UserProps> = ({ mongoId, email, firstName, lastName, image, date, active, handleDelete, roll }) => {
     const dataParsed = (dataArticle: any) => {

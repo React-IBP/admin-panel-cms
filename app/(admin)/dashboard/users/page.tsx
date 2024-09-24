@@ -7,7 +7,7 @@ import Link from "next/link";
 import React, { useEffect, useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { TitleComponentContext } from "@/context/TitleComponentContext";
-import { ButtonDefault } from "@/components/ui/Button";
+import { ButtonDefault } from "@/components/ui/Buttons";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 const Page = () => {
   const { setTitle } = useContext(TitleComponentContext);

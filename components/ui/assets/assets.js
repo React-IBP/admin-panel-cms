@@ -232,3 +232,80 @@ export const rolles = [
     },
 
 ];
+
+export const sections = [
+    {
+        _id: 0,
+        title: "Select a section",
+        value: "",
+
+    },
+    {
+        _id: 1,
+        title: "Sucesos",
+        value: "secesos",
+
+    },
+    {
+        _id: 2,
+        title: "Deportes",
+        value: "deportes",
+
+    },
+    {
+        _id: 3,
+        title: "Colombia",
+        value: "colombia",
+
+    },
+    {
+        _id: 4,
+        title: "Cartagena",
+        value: "cartagena",
+
+    },
+    {
+        _id: 5,
+        title: "Tecnologia",
+        value: "tecnologia",
+
+    },
+]
+export const ArticleStatusOptions = [
+    {
+      _id: 1,
+      title: "Draft",
+      value: "draft",
+    },
+    {
+      _id: 2,
+      title: "Published",
+      value: "published",
+    },
+    {
+      _id: 3,
+      title: "Unpublished",
+      value: "unpublished",
+    },
+    {
+      _id: 4,
+      title: "Archived",
+      value: "archived",
+    },
+    {
+      _id: 5,
+      title: "Pending",
+      value: "pending",
+    },
+    {
+      _id: 6,
+      title: "Scheduled",
+      value: "scheduled",
+    },
+    {
+      _id: 7,
+      title: "Deleted",
+      value: "deleted",
+    },
+  ];
+  

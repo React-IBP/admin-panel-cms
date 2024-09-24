@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useContext, useEffect } from "react";
 import { TitleComponentContext } from "@/context/TitleComponentContext";
-import { ButtonDefault } from '@/components/ui/Button';
+import { ButtonDefault } from '@/components/ui/Buttons';
 import { assets, rolles } from '@/components/ui/assets/assets';
 import { toast } from "react-toastify";
 import Image from "next/image";

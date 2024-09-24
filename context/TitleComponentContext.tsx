@@ -2,10 +2,7 @@
 
 import { createContext, useEffect, useState, ReactNode } from "react";
 
-interface TitleComponentContextProps {
-    titleComponent: string;
-    setTitle: (title: string) => void;
-}
+
 
 export const TitleComponentContext = createContext<TitleComponentContextProps | undefined>(undefined);
 
