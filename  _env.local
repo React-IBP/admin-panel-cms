@@ -1,0 +1,10 @@
+MONGODB_URI_2='mongodb+srv://admin:57mtLXpHWY10AplG@cluster0.dkvaxjz.mongodb.net/blog-app'
+MONGODB_URI="mongodb://admin1:ClaveSegura1%21@5.189.180.35:27017/cms?authSource=admin"
+MONGODB_URI_LOCAL="mongodb://localhost:27017/cms"
+APP_URL='http://localhost:4200'
+SESSION_PASSWORD=Q64PIvTwDCenVfgYsiZa57mtLXpHWY10Apl
+GOOGLE_CLIENT_ID=201077778150-4v8cil8kjjk5kbemrl0il0r855598bmq.apps.googleusercontent.com
+GOOGLE_SECRET_CLIENTE=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
+RESEND_API_KEY=re_Qe1b2MBw_KuqYPAJSeUR1M1TVMyC5Q97m
+URL_APP_PROD="//elchivato.info"
+NEXT_PUBLIC_DEEPSEEK_API_KEY ='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'

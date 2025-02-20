@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.errorInput {
+  border: solid red 2px;
+}
+
+.errorMessageLabel {
+  font-weight: bold;
+  color: #cf0101;
+  font-size: 0.8rem;
+}
+
+.userPicture{
+  cursor: pointer;
+  border-radius: 50%;
+  border: solid 0.5px white;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+}
+ 
+/* h1, h2, h3, h4, h5, h6 {
+  font-size: unset !important;
+  font-weight: unset !important;
+} */
+
+
