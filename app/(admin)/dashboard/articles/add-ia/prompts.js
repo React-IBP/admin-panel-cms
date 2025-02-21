@@ -87,6 +87,7 @@ export const promptGeraArticle = (content) => `
       "Fuentes y Veracidad: Asegúrate de que toda la información sea verificable y esté respaldada por fuentes confiables. No inventes datos ni detalles.",
       "Analiza el contenido proporcionado en formato ld+json (${content}) y genera un artículo atractivo",
       "Formato JSON: Genera el artículo en formato JSON compatible con TipTap/ProseMirror. Sigue la estructura proporcionada y asegúrate de que el contenido comience con { y termine con }.",
+      "Escapa los caracteres especiales y las comillas dobles dentro del JSON con una barra invertida (\\).",
       "Estructura del JSON:",
       "- Usa \"type\": \"heading\" con \"attrs\": { \"level\": 2 } para títulos principales.",
       "- Usa \"type\": \"heading\" con \"attrs\": { \"level\": 3 } para subtítulos.",

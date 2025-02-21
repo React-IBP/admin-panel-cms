@@ -120,7 +120,10 @@ export async function POST(request) {
     // Guardar los datos en la base de datos
     await ArticleModel.create(blogData);
     console.log("Article created");
-	restartApp()
+	  restartApp()
+    await fetch('https://admin.laprensa-ia.tech/api/pm2', {
+      method: 'GET',
+    });
     return NextResponse.json({
       success: true,
       msg: "Article created successfully",
