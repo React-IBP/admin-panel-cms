@@ -1,5 +1,7 @@
 import { ConnectDB } from "@/utils/config/db";
 import ArticleModel from "@/models/articleModel";
+import { describe } from "node:test";
+import { Section } from "lucide-react";
 
 // Conectar a la base de datos
 await ConnectDB();
@@ -10,16 +12,21 @@ export async function GET(request, { params }) {
   try {
     // Buscar el artículo en la base de datos usando el slug
     const article = await ArticleModel.findOne({ slug });
-
+    console.log('Article', article);
     if (article) {
       // Si el artículo existe, devolverlo como respuesta
       return new Response(
         JSON.stringify({
+          _id: article._id,
           title: article.title,
+          slug: article.slug,
+          description: article.description,
+          section: article.section,
+          authors: article.authors,
+          image: article.image,
           content: article.content,
-          author: article.author,
-          date: article.date,
-          slug: article.slug
+          
+         
         }),
         {
           status: 200,
