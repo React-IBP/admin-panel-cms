@@ -12,8 +12,14 @@ import { mongoErrrors } from '@/utils/helpers';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Tabs from './Tabs';
 import extractJsonLd from './extractArticleContent';
-import { Geminis } from './processArtilceGemini';
+import { Geminis } from './processArticleGemini';
 
+
+import TabDetails from './TabDetails';
+import TabMetadata from './TabMetadata';
+import TabPictures from './TabPictures';
+import { ExtractImagesGemini } from './ExtractImagesGemini';
+import { uploadImageCloudinary } from './uploadImageCloudinary.js';
 const Page = () => {
   const [defaultValue, setDefaultValue] = useState({
     type: "doc",
@@ -34,48 +40,87 @@ const Page = () => {
     setArticle(null); // Reiniciar el estado del artículo para forzar la re-renderización
     const content = await extractJsonLd(url);
 
-    if (content.withNewsArticle != null && content.withNewsArticle !== "" && content.withNewsArticle !== "undefined" && content.withNewsArticle !==  undefined) {
+    if (content.withNewsArticle != null && content.withNewsArticle !== "" && content.withNewsArticle !== "undefined" && content.withNewsArticle !== undefined) {
       let articleGenerate = await Geminis(content.withNewsArticle);
       articleGenerate = articleGenerate.replace(/```/g, ''); // Limpiar el contenido
+      const jsonArticle = JSON.parse(articleGenerate);
+      console.log('jsonArticle', jsonArticle);
+      
+      let titleArticle = jsonArticle['content'][0]['content'][0]['text']
+          let slugUrlArticle = titleArticle
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "");
 
-      console.log('Data resultado Geminis', articleGenerate);
+      
+
+      let articleImages = await ExtractImagesGemini(content.withNewsArticle);
+      articleImages = articleImages.replace(/```/g, ''); // Limpiar el contenido
+      console.log('las imagenes', articleImages);
+
+      try {
+        const parsedImages = JSON.parse(articleImages);
+        console.log("json parse", parsedImages);
+    
+        if (parsedImages.imagenes_principales && parsedImages.imagenes_principales.length > 0) {
+            const imageUrl = parsedImages.imagenes_principales[0];
+            console.log("URL de la imagen a subir:", imageUrl);
+    
+            const responseImg = await uploadImageCloudinary(imageUrl, slugUrlArticle);
+            console.log("Respuesta de Cloudinary:", responseImg);
+    
+            if (responseImg && responseImg.secure_url) {
+                setImage(responseImg.secure_url);
+            } else {
+                console.log("No se encontró secure_url en la respuesta de Cloudinary.");
+            }
+        } else {
+            console.log("No hay imágenes principales.");
+        }
+    } catch (error) {
+        console.error("Error al convertir JSON:", error);
+    }
+    
 
       try {
         // Verifica si es string y parsea a objeto
-        const parsedContent = typeof articleGenerate === 'string' 
-          ? JSON.parse(articleGenerate) 
+        const parsedContent = typeof articleGenerate === 'string'
+          ? JSON.parse(articleGenerate)
           : articleGenerate;
 
         setArticle(parsedContent); // Actualizar el estado del artículo
         setDefaultValue(parsedContent); // Actualizar el valor por defecto del editor
         //setData(prevData => ({ ...prevData, content: parsedContent })); // Actualizar el estado de los datos
         // Extraer el título del artículo (primer heading de nivel 2)
-  
 
-  if (parsedContent) {
-	  let titleArticle =  parsedContent['content'][0]['content'][0]['text']
-    let slugUrlArticle = titleArticle
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
 
-    setData(prevData => ({
-      ...prevData,
-      title: titleArticle,
-      urlArticle: slugUrlArticle,
-      authors: "IA",
-      description: "",
-      slug: slugUrlArticle,
-      section: "0",
-      image: "",
-      status: "draft",
-      content: parsedContent
-    }));
-    console.warn('la data', data)
-  }
-  
+        if (parsedContent) {
+          let titleArticle = parsedContent['content'][0]['content'][0]['text']
+          let slugUrlArticle = titleArticle
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "");
+
+          
+          setData(prevData => ({
+            ...prevData,
+            title: titleArticle,
+            urlArticle: slugUrlArticle,
+            authors: "IA-Generated",
+            description: "description",
+            slug: slugUrlArticle,
+            section: "colombia",
+            image: "",
+            status: "draft",
+            content: parsedContent
+          }));
+          console.warn('la data', data)
+        }
+
       } catch (error) {
         console.error('Error al parsear contenido:', error);
       }
@@ -114,7 +159,7 @@ const Page = () => {
   useEffect(() => {
     setData(prevData => ({ ...prevData, content: defaultValue }));
     //console.log(`El articulo en json ${defaultValue}`); 
-}, [defaultValue]); // Se ejecuta cada vez que cambia defaultValue
+  }, [defaultValue]); // Se ejecuta cada vez que cambia defaultValue
   useEffect(() => {
     generateSlug();
   }, [data.title]);
@@ -133,7 +178,10 @@ const Page = () => {
   const handleSubmit = async () => {
     setPending(true);
     const formData = new FormData();
-
+    const editorElement = document.querySelector('[contenteditable="true"]');
+    const htmlContent = editorElement && editorElement.innerHTML ? editorElement.innerHTML : 'czxc';
+    console.log('htmlContent', htmlContent);
+    formData.set('content', htmlContent);
     for (const key in data) {
       formData.append(key, data[key]);
     }
@@ -227,6 +275,9 @@ const Page = () => {
             </div>
           </div>
 
+
+
+
           {/* Renderizar el editor solo si hay contenido */}
           {article ? (
             <div className={`mb-5 ${activeTab === 'tabWrite' ? '' : 'hidden'}`} id='tabWrite'>
@@ -243,7 +294,41 @@ const Page = () => {
             </div>
           )}
 
-          {/* Resto del código... */}
+          <TabDetails
+            activeTab={activeTab}
+            onchangeHandler={onchangeHandler}
+            data={data}
+            errors={errors}
+          />
+
+          <TabMetadata
+            activeTab={activeTab}
+            onchangeHandler={onchangeHandler}
+            data={data}
+            errors={errors}
+          />
+
+          <TabPictures
+            activeTab={activeTab}
+            image={image}
+            setImage={setImage}
+          />
+
+
+
+          <div className="mb-5">
+            <ButtonDefault
+              textButton={pending ? 'Loading...' : 'Save Article'}
+              handleButton={handleSubmit}
+              iconButton='fa fa-save'
+              className='cursor-pointer'
+              typeButton='submit'
+
+            />
+
+          </div>
+
+
         </div>
       )}
     </>

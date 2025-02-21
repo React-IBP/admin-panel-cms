@@ -7,15 +7,16 @@ const nextConfig = {
 		GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
 		GOOGLE_SECRET_CLIENTE: process.env.GOOGLE_SECRET_CLIENTE,
 		RESEND_API_KEY: process.env.RESEND_API_KEY,
-		URL_APP_PROD: process.env.URL_APP_PROD,
+		URL_APP_PROD: process.env.URL_APP_PROD, 
 		MONGODB_URI_LOCAL: process.env.MONGODB_URI_LOCAL,
 		APP_URL: process.env.APP_URL,
 		DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
-		GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+		GEMINI_PRO_API_KEY: process.env.GEMINI_PRO_API_KEY,
+		GEMINI_FLASH_API_KEY: process.env.GEMINI_FLASH_API_KEY,
 	},
 
 	images: {
-		domains: ['tailwindui.com', 'images.unsplash.com', 'lh3.googleusercontent.com'],
+		domains: ['tailwindui.com', 'images.unsplash.com', 'lh3.googleusercontent.com', 'res.cloudinary.com'],
 	},
 	 
 };

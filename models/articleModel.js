@@ -5,7 +5,7 @@ const ArticleSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Title is required'],
     minlength: [5, 'Title must be at least 5 characters long'],
-    maxlength: [100, 'Title can not exceed 100 characters'],
+    maxlength: [200, 'Title can not exceed 200 characters'],
   },
   slug: {
     type: String,

@@ -111,31 +111,41 @@ export async function createArticleAction(data: FormData) {
   console.log("Image:", typeof image);
 
   // Si existe una imagen en el formulario
-  if (image && image.arrayBuffer) {
-    const imageByteData = await image.arrayBuffer();
-    const buffer = Buffer.from(imageByteData);
-    const extension = image.name.split(".").pop();
+  if (image) {
+    if (typeof image === "string") {
+        // Si `image` es una URL, la asigna directamente a `imgUrl`
+        imgUrl = image;
+    } else if (image.arrayBuffer) {
+        // Si `image` es un archivo subido
+        const imageByteData = await image.arrayBuffer();
+        const buffer = Buffer.from(imageByteData);
+        const extension = image.name.split(".").pop();
 
-    fileName = `${timestamp}_article_image`;
+        fileName = `${timestamp}_article_image`;
 
-    if (!fileName.toLowerCase().endsWith(`.${extension}`)) {
-      fileName = `${fileName}.${extension}`;
+        if (!fileName.toLowerCase().endsWith(`.${extension}`)) {
+            fileName = `${fileName}.${extension}`;
+        }
+
+        const path = (nameFile, extension) => {
+            let fileName = `./public/images/articles/${nameFile}`;
+            if (!fileName.toLowerCase().endsWith(extension)) {
+                fileName = `${fileName}.${extension}`;
+            }
+            return fileName;
+        };
+
+        const filePath = path(fileName, extension);
+        await writeFile(filePath, buffer);
+        imgUrl = filePath.replace("./public/", "/");
+    } else {
+        // En caso de que `image` no sea ni una URL ni un archivo válido
+        imgUrl = "/public/images/articles/placeholder_article.png";
     }
+} else {
+    imgUrl = "/public/images/articles/placeholder_article.png";
+}
 
-    const path = (nameFile: string, extension: string) => {
-      let fileName = `./public/images/articles/${nameFile}`;
-      if (!fileName.toLowerCase().endsWith(extension)) {
-        fileName = `${fileName}.${extension}`;
-      }
-      return fileName;
-    };
-
-    const filePath = path(fileName, extension);
-    await writeFile(filePath, buffer);
-    imgUrl = filePath.replace("./public/", "/");
-  } else {
-    imgUrl = `/public/images/articles/placeholder_article.png`;
-  }
 
   // Estructura de los datos para guardar en la base de datos
   const articleData = {

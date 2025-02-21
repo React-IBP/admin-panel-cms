@@ -23,7 +23,7 @@ const Page = () => {
     ]
   };
 
-  const [image, setImage] = useState(null);
+
   const { setTitle } = useContext(TitleComponentContext);
   const [data, setData] = useState({
     title: "",
@@ -78,10 +78,7 @@ const Page = () => {
       formData.append(key, data[key]);
     }
 
-    // Solo agregar la imagen si hay una seleccionada
-    if (image) {
-      formData.append('image', image);
-    }
+
 
     try {
       const result = await createArticleAction(formData);
@@ -242,53 +239,53 @@ const Page = () => {
               />
             </div>
             <div className={` mb-5 `}>
-                <label htmlFor="section" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Section</label>
+              <label htmlFor="section" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Section</label>
 
 
-                <select onChange={onchangeHandler} id="section" name="section" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <select onChange={onchangeHandler} id="section" name="section" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                  {
-                    sections.map((item, idx) => (
-                      item.value.length === 0
-                        ? <option key={idx * 2} defaultValue="0">Select a section</option>
-                        : <option key={idx} value={item.value}>{item.title}</option>
-                    ))
-                  }
+                {
+                  sections.map((item, idx) => (
+                    item.value.length === 0
+                      ? <option key={idx * 2} defaultValue="0">Select a section</option>
+                      : <option key={idx} value={item.value}>{item.title}</option>
+                  ))
+                }
 
-                </select>
-                {errors?.saved?.errors?.section && (
-                  <>
-                    <span className="errorMessageLabel">{
-                      errors.saved.errors.section.message
-                    }  </span>
-                  </>
-                )}
-              </div>
-              
+              </select>
+              {errors?.saved?.errors?.section && (
+                <>
+                  <span className="errorMessageLabel">{
+                    errors.saved.errors.section.message
+                  }  </span>
+                </>
+              )}
+            </div>
+
           </div>
 
           <div className={` mb-5  ${activeTab === 'tabPictures' ? ' ' : 'hidden'}`} id='tabPictures'>
-              <div className=" mb-5 flex flex-col  z-0 w-full mb-5 group text-center items-center">
+            <div className=" mb-5 flex flex-col  z-0 w-full mb-5 group text-center items-center">
 
-                <label htmlFor="image">
-                  <Image
-                    className="mt-4"
-                    src={image ? URL.createObjectURL(image) : assets.upload_area}
-                    alt=""
-                    width={image ? 400 : 100}
-                    height={image ? 300 : 145}
-                  />
-
-                </label>
-                <input
-                  onChange={(event) => setImage(event.target.files[0])}
-                  type="file"
-                  id="image"
-                  name="image"
-                  hidden
+              <label htmlFor="image">
+                <Image
+                  className="mt-4"
+                  src={image ? URL.createObjectURL(image) : assets.upload_area}
+                  alt=""
+                  width={image ? 400 : 100}
+                  height={image ? 300 : 145}
                 />
-              </div>
+
+              </label>
+              <input
+                onChange={(event) => setImage(event.target.files[0])}
+                type="file"
+                id="image"
+                name="image"
+                hidden
+              />
             </div>
+          </div>
 
           <div className="mb-5">
             <ButtonDefault
@@ -297,9 +294,9 @@ const Page = () => {
               iconButton='fa fa-save'
               className='cursor-pointer'
               typeButton='submit'
-              
+
             />
-              
+
           </div>
         </div>
       )}
