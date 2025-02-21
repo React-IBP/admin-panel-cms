@@ -170,6 +170,15 @@ export async function createArticleAction(data: FormData) {
       msg: "Article created successfully",
       article,
     };
+
+
+    const response = await fetch('https://admin.laprensa-ia.tech/api/pm2', {
+      method: 'GET',
+    });
+    const result = await response.json();
+    console.log('Fetch response:-------->', result);
+
+    
     return JSON.stringify(response);
   } catch (error: any) {
     console.log('error response to create article', error);
