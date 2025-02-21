@@ -121,9 +121,12 @@ export async function POST(request) {
     await ArticleModel.create(blogData);
     console.log("Article created");
 	  restartApp()
-    await fetch('https://admin.laprensa-ia.tech/api/pm2', {
+    const response = await fetch('https://admin.laprensa-ia.tech/api/pm2', {
       method: 'GET',
     });
+    const result = await response.json();
+    console.log('Fetch response:-------->', result);
+
     return NextResponse.json({
       success: true,
       msg: "Article created successfully",
