@@ -20,6 +20,7 @@ import TabMetadata from './TabMetadata';
 import TabPictures from './TabPictures';
 import { ExtractImagesGemini } from './ExtractImagesGemini';
 import { uploadImageCloudinary } from './uploadImageCloudinary.js';
+import { SetSectionArticle } from './SetSectionArticle';
 const Page = () => {
   const [defaultValue, setDefaultValue] = useState({
     type: "doc",
@@ -31,10 +32,10 @@ const Page = () => {
     ]
   });
 
-  const [url, setUrl] = useState('https://www.semana.com/politica/articulo/exclusivo-ferney-lozano-quien-gestiono-la-avioneta-de-papa-pitufo-para-gustavo-petro-rompe-su-silencio-y-revela-lo-que-ocurrio/202504/');
+  const [url, setUrl] = useState('https://www.eluniversal.com.co/deportes/2025/02/21/james-rodriguez-un-iman-de-taquilla-y-espectaculo-en-mexico/');
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(false); // Estado para manejar la carga
-
+  const [sectionArticle, setSectionArticle] = useState("colombia");
   const handleExtract = async () => {
     setLoading(true); // Activar el estado de carga
     setArticle(null); // Reiniciar el estado del artículo para forzar la re-renderización
@@ -45,44 +46,49 @@ const Page = () => {
       articleGenerate = articleGenerate.replace(/```/g, ''); // Limpiar el contenido
       const jsonArticle = JSON.parse(articleGenerate);
       console.log('jsonArticle', jsonArticle);
-      
-      let titleArticle = jsonArticle['content'][0]['content'][0]['text']
-          let slugUrlArticle = titleArticle
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/(^-|-$)/g, "");
 
-      
+      let titleArticle = jsonArticle['content'][0]['content'][0]['text']
+      let slugUrlArticle = titleArticle
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+
+
 
       let articleImages = await ExtractImagesGemini(content.withNewsArticle);
       articleImages = articleImages.replace(/```/g, ''); // Limpiar el contenido
       console.log('las imagenes', articleImages);
 
+      let sectionArticle = await SetSectionArticle(content.withNewsArticle);
+      sectionArticle = sectionArticle.replace(/```/g, '').toLowerCase(); // Limpiar el contenido
+      console.log('la seccion', sectionArticle);
+      setSectionArticle(sectionArticle);
+
       try {
         const parsedImages = JSON.parse(articleImages);
         console.log("json parse", parsedImages);
-    
+
         if (parsedImages.imagenes_principales && parsedImages.imagenes_principales.length > 0) {
-            const imageUrl = parsedImages.imagenes_principales[0];
-            console.log("URL de la imagen a subir:", imageUrl);
-    
-            const responseImg = await uploadImageCloudinary(imageUrl, slugUrlArticle);
-            console.log("Respuesta de Cloudinary:", responseImg);
-    
-            if (responseImg && responseImg.secure_url) {
-                setImage(responseImg.secure_url);
-            } else {
-                console.log("No se encontró secure_url en la respuesta de Cloudinary.");
-            }
+          const imageUrl = parsedImages.imagenes_principales[0];
+          console.log("URL de la imagen a subir:", imageUrl);
+
+          const responseImg = await uploadImageCloudinary(imageUrl, slugUrlArticle);
+          console.log("Respuesta de Cloudinary:", responseImg);
+
+          if (responseImg && responseImg.secure_url) {
+            setImage(responseImg.secure_url);
+          } else {
+            console.log("No se encontró secure_url en la respuesta de Cloudinary.");
+          }
         } else {
-            console.log("No hay imágenes principales.");
+          console.log("No hay imágenes principales.");
         }
-    } catch (error) {
+      } catch (error) {
         console.error("Error al convertir JSON:", error);
-    }
-    
+      }
+
 
       try {
         // Verifica si es string y parsea a objeto
@@ -105,7 +111,7 @@ const Page = () => {
             .replace(/[^a-z0-9]+/g, "-")
             .replace(/(^-|-$)/g, "");
 
-          
+
           setData(prevData => ({
             ...prevData,
             title: titleArticle,
@@ -113,7 +119,7 @@ const Page = () => {
             authors: "IA-Generated",
             description: "description",
             slug: slugUrlArticle,
-            section: "colombia",
+            section: sectionArticle,
             image: "",
             status: "draft",
             content: parsedContent

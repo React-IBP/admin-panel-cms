@@ -10,7 +10,7 @@ export async function Geminis(content) {
 
         console.log("Prompt refineArticle ----------->:", requestData);//GEMINI_PRO_API_KEY
 
-        const response = await fetch(process.env.GEMINI_PRO_API_KEY, {
+        const response = await fetch(process.env.GEMINI_FLASH_API_KEY, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestData)

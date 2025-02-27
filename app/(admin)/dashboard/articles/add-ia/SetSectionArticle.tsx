@@ -1,11 +1,30 @@
 import OpenAI from 'openai';
+import { sections } from '@/components/ui/assets/assets';
+  
+export async function SetSectionArticle(content) {
 
-console.log('------------->', process.env.GEMINI_FLASH_API_KEY)
- 
-import {promptGeraArticle} from './prompts.js';
+const promptContent = `
+{
+  "prompt": {
+    "instructions": [
+      "Analiza el contenido proporcionado en formato JSON-LD (${content}).",
+      "Regresame el nombre de la seccion a la que debe pertenecer el articulo aqui tienes las secciones que puedes usar${sections}",
+      "Regresa el nombre exacto de la seccion, no incluyas comillas ni caracteres especiales.",
+      "no agregues informacion adicional en la respuesta.",
+      "Ejemplo de respuesta:",
+        "colombia" o "cartagena" ,
+      "solo usa una palabra" ,
+    ]
+  },
+  "format": "json",
+  "safety": "lax",
+  "length": "long",
+  "temperature": 0.8,
+  "presence_penalty": 0.4,
+  "translate": false
+}
 
-export async function Geminis(content) {
-
+`;
 
 	//   console.log('El prompt ', promptContent)
 	try {
@@ -14,14 +33,14 @@ export async function Geminis(content) {
         const requestData = {
             contents: [{
                 parts: [{
-                    text: promptGeraArticle(content)
+                    text: promptContent
                 }]
             }]
         };
 
         console.log("Prompt refineArticle  ----------->:", requestData);
 
-        fetch(process.env.GEMINI_PRO_API_KEY, {
+        fetch(process.env.GEMINI_FLASH_API_KEY, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -53,34 +72,4 @@ export async function Geminis(content) {
 	}
 }
 
-export async function proccessArticleGeminis(dataArticle) {
-    let respuesta = null;
-    console.log('Interactuando con Geminis');
-
-    if (!dataArticle || dataArticle.length === 0) {
-        return null;
-    }
-
-    try {
-        // Ejecutar la pregunta y esperar la respuesta
-        respuesta = await Geminis(dataArticle);
-
-        // Expresión regular para extraer el contenido dentro de <article>...</article>
-        const articleRegex = /<article[^>]*>([\s\S]*?)<\/article>/i;
-        const match = respuesta.match(articleRegex);
-
-        // Si se encuentra el tag <article>, retornar su contenido
-        if (match && match[0]) {
-            respuesta = match[0];
-            console.log('El dato', respuesta );
-        } else {
-            console.warn("No se encontró el tag <article> en la respuesta de Geminis.");
-            respuesta = null;
-        }
-
-    } catch (error) {
-        console.error("Error en proccessArticleGeminis:", error);
-    }
-
-    return respuesta;
-}
+ 

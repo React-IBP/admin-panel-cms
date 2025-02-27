@@ -25,7 +25,8 @@ export async function GET(request, { params }) {
           authors: article.authors,
           image: article.image,
           content: article.content,
-          
+          date: article.date,
+          status: article.status,
          
         }),
         {

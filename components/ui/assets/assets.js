@@ -236,41 +236,90 @@ export const rolles = [
 export const sections = [
     {
         _id: 0,
-        title: "Select a section",
+        title: "Selecciona una sección",
         value: "",
-
     },
     {
         _id: 1,
-        title: "Sucesos",
-        value: "secesos",
-
+        title: "Cartagena",
+        value: "cartagena",
     },
     {
         _id: 2,
-        title: "Deportes",
-        value: "deportes",
-
+        title: "Bolívar",
+        value: "bolivar",
     },
     {
         _id: 3,
-        title: "Colombia",
+        title: "Colombia", // Sección que engloba las noticias nacionales
         value: "colombia",
-
     },
     {
         _id: 4,
-        title: "Cartagena",
-        value: "cartagena",
-
+        title: "Mundo",
+        value: "mundo",
     },
     {
         _id: 5,
-        title: "Tecnologia",
-        value: "tecnologia",
-
+        title: "Sucesos",
+        value: "sucesos",
     },
-]
+    {
+        _id: 6,
+        title: "Deportes",
+        value: "deportes",
+    },
+    {
+        _id: 7,
+        title: "Regional", // Sección de deportes regional
+        value: "regional",
+    },
+    {
+        _id: 8,
+        title: "Cultura",
+        value: "cultura",
+    },
+    {
+        _id: 9,
+        title: "Opinión",
+        value: "opinion",
+    },
+    {
+        _id: 10,
+        title: "Economía",
+        value: "economia",
+    },
+    {
+        _id: 11,
+        title: "Salud",
+        value: "salud",
+    },
+    {
+        _id: 12,
+        title: "Tecnología",
+        value: "tecnologia",
+    },
+    {
+        _id: 13,
+        title: "Estilo de Vida",
+        value: "estilo-de-vida",
+    },
+    {
+        _id: 14,
+        title: "Especiales",
+        value: "especiales",
+    },
+    {
+        _id: 15,
+        title: "Clasificados",
+        value: "clasificados",
+    },
+    {
+        _id: 16,
+        title: "Farandula", // Sección de farándula y entretenimiento
+        value: "farandula",
+    },
+];
 export const ArticleStatusOptions = [
     {
       _id: 1,
